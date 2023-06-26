@@ -52,19 +52,19 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "/users/billdonner/Desktop/fs/prepper-main-in.json"
+            argument = "/users/billdonner/Desktop/fs/Between_1_2.json"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "/users/billdonner/Desktop/fs/prepper-veracity-in.json"
+            argument = "/users/billdonner/Desktop/fs/Between_3_4.json"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-o /users/billdonner/Desktop/fs/blender-output.json"
+            argument = "-o /users/billdonner/Desktop/fs/readyforios2.json"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-- help"
+            argument = "--help"
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
