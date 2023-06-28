@@ -286,17 +286,56 @@ struct Blender: ParsableCommand {
     try fetchOpinions(&opinions)
     print(">Blender: \(opinions.count) Opinions")
     
-    let newOpinions = blend(x: opinions, y: challenges)
-    print(">Blender: \(newOpinions.count) Merged")
+    var newChallenges = blend(x: opinions, y: challenges)
+    print(">Blender: \(newChallenges.count) Merged")
 
-    let zEncoder = JSONEncoder()
-    zEncoder.outputFormatting = .prettyPrinted
-    let zData = try zEncoder.encode(newOpinions)
-    if let outputPath = outputPath {
-      try zData.write(to:URL(fileURLWithPath: outputPath))
-    } else {
-      print(String(data: zData, encoding: .utf8)!)
+//    let zEncoder = JSONEncoder()
+//    zEncoder.outputFormatting = .prettyPrinted
+//    let zData = try zEncoder.encode(newChallenges)
+//    if let outputPath = outputPath {
+//      try zData.write(to:URL(fileURLWithPath: outputPath))
+//    } else {
+//      print(String(data: zData, encoding: .utf8)!)
+//    }
+    
+    
+    //sort by topic
+    newChallenges.sort(){ a,b in
+      return a.topic < b.topic
     }
+    //separate challenges by topic and make an array of GameDatas
+    var topicCount = 0
+    var gameDatum : [ GameData] = []
+    var lastTopic: String? = nil
+    var theseChallenges : [Challenge] = []
+    for challenge in newChallenges {
+      // print(challenge.topic,lastTopic)
+      if let last = lastTopic  {
+        if challenge.topic != last {
+          gameDatum.append( GameData(subject:last,challenges: theseChallenges))
+          theseChallenges = []
+         topicCount += 1
+        }
+      }
+      // append this challenge and set topic
+      theseChallenges += [challenge]
+      lastTopic = challenge.topic
+      
+    }
+    if let last = lastTopic {
+      topicCount += 1
+      gameDatum.append( GameData(subject:last,challenges: theseChallenges)) //include remainders
+    }
+
+    //gamedata is good for writing
+    if let outputPath = outputPath {
+      let encoder = JSONEncoder()
+      encoder.outputFormatting = .prettyPrinted
+      let data = try encoder.encode(gameDatum)
+      try data.write(to:URL(fileURLWithPath: outputPath))
+      print(">Blender wrote \(data.count) bytes to \(outputPath)")
+    }
+    
     
     let elapsed = Date().timeIntervalSince(start_time)
     print(">Blender finished in \(elapsed)secs")
