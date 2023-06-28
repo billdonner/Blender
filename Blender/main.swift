@@ -33,7 +33,7 @@ func blend(x:[Opinion], y:[Challenge]) -> [Challenge] {
     for o in x {
         for c in y {
             if o.id == c.id {
-              let z = Challenge(question: c.question, topic: c.topic, hint: c.hint, answers: c.answers, correct: c.correct ,id: UUID().uuidString,opinions:[o])
+              let z = Challenge(question: c.question, topic: c.topic, hint: c.hint, answers: c.answers, correct: c.correct ,id: c.id,source:c.source, opinions:[o])
               mergedArray.append(z)
             }
         }
@@ -66,7 +66,7 @@ func mergeArrays(x:[Opinion], y:[Challenge]) -> [Challenge]  {
       let yy = sortedY[yIndex]
       
       //create Z object
-      let z = Challenge(question: yy.question, topic: yy.topic, hint: yy.hint, answers: yy.answers, correct: yy.correct ,id: UUID().uuidString,opinions:[bb])
+      let z = Challenge(question: yy.question, topic: yy.topic, hint: yy.hint, answers: yy.answers, correct: yy.correct ,id: yy.id,opinions:[bb])
       mergedArray.append(z)
       
       //increment both indices
