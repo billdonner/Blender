@@ -5,21 +5,6 @@ import q20kshare
 import Foundation
 import ArgumentParser
 
-//func testBlend () {
-//  let x1 = Challenge(question: "Why sky blue?", topic: "sky", hint: "not green", answers: ["red","yellow","green"], correct: "green",id:"sky-blue")
-//  let x2 = Challenge(question: "Why sky yellow?", topic: "sky", hint: "not green", answers: ["red","yellow","green"], correct: "yellow",id:"yellow-belly")
-//  let y1 = Opinion(id: "sky-blue",  truth: true, explanation: "blee blue,", source: "fakeA")
-//  let y2 = Opinion(id: "sky-blue",  truth: false, explanation: "blee yellow,", source: "fakeB")
-//
-//  let x = [x1,x2]
-//  let y = [y1,y2]
-//
-//  let z = blend(x:y,y:x)
-//  for zz in z {
-//    print(zz)
-//  }
-//
-//}
 
 enum BlenderError :Error {
   case cantRead
@@ -28,64 +13,19 @@ enum BlenderError :Error {
 }
 
 //write a function to merge arrays X and Y according to "id"
-func blend(x:[Opinion], y:[Challenge]) -> [Challenge] {
+func blend(opinions:[Opinion], challenges:[Challenge]) -> [Challenge] {
     var mergedArray: [Challenge] = []
-    for o in x {
-        for c in y {
+    for o in opinions {
+        for c in challenges {
             if o.id == c.id {
-              let z = Challenge(question: c.question, topic: c.topic, hint: c.hint, answers: c.answers, correct: c.correct ,id: c.id,source:c.source, opinions:[o])
+              let z = Challenge(question: c.question, topic: c.topic, hint: c.hint, answers: c.answers, correct: c.correct ,id: c.id,source:c.aisource, prompt:c.prompt, opinions:[o])
               mergedArray.append(z)
             }
         }
     }
     return mergedArray
 }
-//sort both arrays before merging
-func mergeArrays(x:[Opinion], y:[Challenge]) -> [Challenge]  {
-  
-  //sort both Arrays
-  let sortedX = x.sorted(by:{ $0.id > $1.id })
-  let sortedY = y.sorted(by:{ $0.id > $1.id })
-  
-  // declare the empty output Array
-  var mergedArray = [Challenge]()
-  
-  //track the index of the arrays
-  var xIndex = 0
-  var yIndex = 0
-  
-  //loop through both sorted Arrays
-  while((xIndex<sortedX.count) && (yIndex<sortedY.count)) {
-    
-    let xId = sortedX[xIndex].id
-    let yId = sortedY[yIndex].id
-    
-    //check if ID's in each array are equal
-    if (xId == yId) {
-      let bb = sortedX[xIndex]
-      let yy = sortedY[yIndex]
-      
-      //create Z object
-      let z = Challenge(question: yy.question, topic: yy.topic, hint: yy.hint, answers: yy.answers, correct: yy.correct ,id: yy.id,opinions:[bb])
-      mergedArray.append(z)
-      
-      //increment both indices
-      xIndex+=1
-      yIndex+=1
-    }
-    //if xId higher then yId
-    else if (xId > yId) {
-      yIndex+=1
-    }
-    //if yId higher then xId
-    else {
-      xIndex+=1
-    }
-  }
-  return mergedArray
-}
-
-
+//
 
 fileprivate func fixupJSON(   data: Data, url: String)throws -> [Challenge] {
   // see if missing ] at end and fix it\
@@ -111,92 +51,6 @@ fileprivate func fixupJSON(   data: Data, url: String)throws -> [Challenge] {
     }
   }
   throw BlenderError.noChallenges
-}
-fileprivate func writeAsJSON<T:Encodable>(_ data: [T], _ outurl: URL) throws -> Int {
-  let encoder = JSONEncoder()
-  encoder.outputFormatting = .prettyPrinted
-  var bc = 0
-  do {
-    let data = try encoder.encode(data)
-    let json = String(data:data,encoding: .utf8)
-    if let json  {
-      bc = json.count
-      try json.write(to: outurl, atomically: false, encoding: .utf8)
-    }
-  }
-  return bc
-}
-
-
-func writeOutputFiles(_ urls:[String], gameFile:String)
-{
-  var allChallenges:[Challenge] = []
-  var topicCount = 0
-  var fileCount = 0
-  let start_time = Date()
-  
-  let fj = gameFile + "-gamedata.json"
-  let gamedataURL = URL(string:fj)
-  guard let gamedataURL = gamedataURL else { return }
-  for url in urls {
-    // read all the urls again
-    guard let u = URL(string:url) else {
-      print("Cant read url \(url)")
-      continue
-    }
-    do {
-      fileCount += 1
-      let data = try Data(contentsOf: u)
-      allChallenges =  try fixupJSON(data:data,  url:u.absoluteString)
-    }
-    catch {
-      print("Could not re-read \(u) error:\(error)")
-      continue
-    }
-    print(">Blender reading from \(url)")
-    //sort by topic
-    allChallenges.sort(){ a,b in
-      return a.topic < b.topic
-    }
-    //separate challenges by topic and make an array of GameDatas
-    var gameDatum : [ GameData] = []
-    var lastTopic: String? = nil
-    var theseChallenges : [Challenge] = []
-    for challenge in allChallenges {
-      // print(challenge.topic,lastTopic)
-      if let last = lastTopic  {
-        if challenge.topic != last {
-          gameDatum.append( GameData(subject:last,challenges: theseChallenges))
-          theseChallenges = []
-          topicCount += 1
-        }
-      }
-      // append this challenge and set topic
-      theseChallenges += [challenge]
-      lastTopic = challenge.topic
-      
-    }
-    if let last = lastTopic {
-      topicCount += 1
-      gameDatum.append( GameData(subject:last,challenges: theseChallenges)) //include remainders
-    }
-    // compute truth challenges
-    var cha:[TruthQuery] = []
-    for gd in gameDatum {
-      for ch in gd.challenges {
-        cha.append(ch.makeTruthQuery())
-      }
-    }
-    do{
-      // write Challenges as JSON to file
-      let bc = try writeAsJSON(gameDatum, gamedataURL)
-      let elapsed = Date().timeIntervalSince(start_time)
-      print(">Wrote \(bc) bytes, \(allChallenges.count) challenges, \(topicCount) topics to \(gamedataURL) in elapsed \(elapsed) secs")
-    }
-    catch {
-      print("Utterly failed to write json file \(gamedataURL)/n \(error)")
-    }
-  }
 }
 
 
@@ -286,17 +140,10 @@ struct Blender: ParsableCommand {
     try fetchOpinions(&opinions)
     print(">Blender: \(opinions.count) Opinions")
     
-    var newChallenges = blend(x: opinions, y: challenges)
+    var newChallenges = blend(opinions: opinions, challenges: challenges)
+    
     print(">Blender: \(newChallenges.count) Merged")
 
-//    let zEncoder = JSONEncoder()
-//    zEncoder.outputFormatting = .prettyPrinted
-//    let zData = try zEncoder.encode(newChallenges)
-//    if let outputPath = outputPath {
-//      try zData.write(to:URL(fileURLWithPath: outputPath))
-//    } else {
-//      print(String(data: zData, encoding: .utf8)!)
-//    }
     
     
     //sort by topic

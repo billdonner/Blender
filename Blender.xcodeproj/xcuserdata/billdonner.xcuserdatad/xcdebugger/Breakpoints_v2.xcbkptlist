@@ -14,8 +14,8 @@
             filePath = "Blender/main.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
             landmarkName = "run()"
             landmarkType = "7">
             <Locations>
@@ -70,47 +70,63 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8D5C417B-D40C-4626-9B17-40F4AC3ACA5C"
-            shouldBeEnabled = "Yes"
+            uuid = "33B77ACA-E940-44FF-8E7F-12EEA2DFBE52"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Blender/main.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "blend(opinions:challenges:)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9D9D78E5-66D3-4310-892A-0AA17B14AFBF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Blender/main.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
+            landmarkName = "run()"
+            landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "8D5C417B-D40C-4626-9B17-40F4AC3ACA5C - 238ee7838406b617"
+                  uuid = "9D9D78E5-66D3-4310-892A-0AA17B14AFBF - faffb6a3700e3cb1"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Blender.testBlend() -&gt; ()"
+                  symbolName = "Blender.Blender.run() throws -&gt; ()"
                   moduleName = "Blender"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/billdonner/Documents/Blender/Blender/main.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "13"
-                  endingLineNumber = "13"
-                  offsetFromSymbolStart = "2696">
+                  startingLineNumber = "149"
+                  endingLineNumber = "149"
+                  offsetFromSymbolStart = "2836">
                </Location>
                <Location
-                  uuid = "8D5C417B-D40C-4626-9B17-40F4AC3ACA5C - 238ee7838406b617"
+                  uuid = "9D9D78E5-66D3-4310-892A-0AA17B14AFBF - faffb6a3700e3f3d"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Blender.testBlend() -&gt; ()"
+                  symbolName = "Blender.Blender.run() throws -&gt; ()"
                   moduleName = "Blender"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/billdonner/Documents/Blender/Blender/main.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "13"
-                  endingLineNumber = "13"
-                  offsetFromSymbolStart = "2692">
+                  startingLineNumber = "145"
+                  endingLineNumber = "145"
+                  offsetFromSymbolStart = "2464">
                </Location>
             </Locations>
          </BreakpointContent>
