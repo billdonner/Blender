@@ -60,7 +60,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-o /users/billdonner/Desktop/fs/readyforios2.json"
+            argument = "-o /users/billdonner/Desktop/fs/readyforios1.json"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

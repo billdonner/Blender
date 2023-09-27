@@ -60,7 +60,7 @@ struct Blender: ParsableCommand {
   
   static let configuration = CommandConfiguration(
     abstract: "Step 4: Blender merges the data from Veracitator with the data from Prepper and prepares a single output file of gamedata - ReadyforIOS.",
-    version: "0.2.1",
+    version: "0.3.1",
     subcommands: [],
     defaultSubcommand: nil,
     helpNames: [.long, .short]
@@ -173,14 +173,16 @@ struct Blender: ParsableCommand {
       topicCount += 1
       gameDatum.append( GameData(subject:last,challenges: theseChallenges)) //include remainders
     }
-
+    
+ 
+    let  z = PlayData(gameDatum:gameDatum,playDataId:UUID().uuidString,blendDate: Date(),pic:nil)
     //gamedata is good for writing
     if let outputPath = outputPath {
       let encoder = JSONEncoder()
       encoder.outputFormatting = .prettyPrinted
-      let data = try encoder.encode(gameDatum)
+      let data = try encoder.encode(z)
       try data.write(to:URL(fileURLWithPath: outputPath))
-      print(">Blender wrote \(data.count) bytes to \(outputPath)")
+      print(">Blender wrote \(data.count) PlayData bytes to \(outputPath)")
     }
     
     
