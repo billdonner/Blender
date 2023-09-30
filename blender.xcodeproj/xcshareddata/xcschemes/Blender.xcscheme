@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1430"
+   LastUpgradeVersion = "1500"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8844C7052A41022C00A88E42"
-               BuildableName = "Blender"
-               BlueprintName = "Blender"
+               BuildableName = "blender"
+               BlueprintName = "blender"
                ReferencedContainer = "container:Blender.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8844C7052A41022C00A88E42"
-            BuildableName = "Blender"
-            BlueprintName = "Blender"
+            BuildableName = "blender"
+            BlueprintName = "blender"
             ReferencedContainer = "container:Blender.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -80,8 +80,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8844C7052A41022C00A88E42"
-            BuildableName = "Blender"
-            BlueprintName = "Blender"
+            BuildableName = "blender"
+            BlueprintName = "blender"
             ReferencedContainer = "container:Blender.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

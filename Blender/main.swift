@@ -12,6 +12,7 @@ enum BlenderError :Error {
   case noChallenges
 }
 
+
 //write a function to merge arrays X and Y according to "id"
 func blend(opinions:[Opinion], challenges:[Challenge]) -> [Challenge] {
     var mergedArray: [Challenge] = []
@@ -27,23 +28,24 @@ func blend(opinions:[Opinion], challenges:[Challenge]) -> [Challenge] {
 }
 //
 
-fileprivate func fixupJSON(   data: Data, url: String)throws -> [Challenge] {
+struct Blender: ParsableCommand {
+  func fixupJSON(   data: Data, url: String)throws -> [Challenge] {
   // see if missing ] at end and fix it\
   do {
     return try Challenge.decodeArrayFrom(data: data)
   }
   catch {
-    print("****Trying to recover from decoding error, \(error)")
+    wprint("****Trying to recover from decoding error, \(error)")
     if let s = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) {
       if !s.hasSuffix("]") {
         if let v = String(s+"]").data(using:.utf8) {
           do {
             let x = try Challenge.decodeArrayFrom(data: v)
-            print("****Fixup Succeeded by adding a ]. There is nothing to do")
+            wprint("****Fixup Succeeded by adding a ]. There is nothing to do")
             return x
           }
           catch {
-            print("****Can't read Challenges from \(url), error: \(error)" )
+            wprint("****Can't read Challenges from \(url), error: \(error)" )
             throw BlenderError.badInputURL
           }
         }
@@ -56,8 +58,12 @@ fileprivate func fixupJSON(   data: Data, url: String)throws -> [Challenge] {
 
 
 
-struct Blender: ParsableCommand {
-  
+  func wprint(x:Any) {
+    if warnings {
+      print(x)
+    }
+  }
+
   static let configuration = CommandConfiguration(
     abstract: "Step 4: Blender merges the data from Veracitator with the data from Prepper and prepares a single output file of gamedata - ReadyforIOS.",
     version: "0.3.1",
@@ -75,22 +81,25 @@ struct Blender: ParsableCommand {
   @Option(name:.shortAndLong, help: "New File of Gamedata (ReadyForIOSx.json)")
   var outputPath: String?
   
+  @Option(name:.warnings, help: "Show warnings about quiet file recoveries")
+  var warnings: Bool = false
+  
   fileprivate func fetchChallenges(_ challenges: inout [Challenge]) throws {
     let xData = try Data(contentsOf: URL(fileURLWithPath: xPath))
     do {
       challenges = try JSONDecoder().decode([Challenge].self, from: xData)
     }
     catch {
-      print("****Trying to recover from Challenge decoding error, \(error)")
+    wprint("****Trying to recover from Challenge decoding error, \(error)")
       if let s = String(data: xData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) {
         if !s.hasSuffix("]") {
           if let v = String(s+"]").data(using:.utf8) {
             do {
               challenges = try JSONDecoder().decode([Challenge].self, from: v)
-              print("****Fixed by adding trailing ], there is nothing to do")
+              wprint("****Fixed by adding trailing ], there is nothing to do")
             }
             catch {
-              print("****Can't decode contents of \(xPath), error: \(error)" )
+             print("****Can't decode contents of \(xPath), error: \(error)" )
               throw BlenderError.cantRead
             }
           }
@@ -105,13 +114,13 @@ struct Blender: ParsableCommand {
       opinions = try JSONDecoder().decode([Opinion].self, from: yData)
     }
     catch {
-      print("****Trying to recover from Opinion decoding error, \(error)")
+     wprint("****Trying to recover from Opinion decoding error, \(error)")
       if let s = String(data: yData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) {
         if !s.hasSuffix("]") {
           if let v = String(s+"]").data(using:.utf8) {
             do {
               opinions = try JSONDecoder().decode([Opinion].self, from: v)
-              print("****Fixed by adding trailing ], there is nothing to do")
+              wprint("****Fixed by adding trailing ], there is nothing to do")
             }
             catch {
               print("****Can't read contents of \(yPath), error: \(error)" )

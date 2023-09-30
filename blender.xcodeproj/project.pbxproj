@@ -25,7 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		8844C7062A41022C00A88E42 /* Blender */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Blender; sourceTree = BUILT_PRODUCTS_DIR; };
+		8844C7062A41022C00A88E42 /* blender */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = blender; sourceTree = BUILT_PRODUCTS_DIR; };
 		8844C7092A41022C00A88E42 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8844C7162A41CEC500A88E42 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -55,7 +55,7 @@
 		8844C7072A41022C00A88E42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8844C7062A41022C00A88E42 /* Blender */,
+				8844C7062A41022C00A88E42 /* blender */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -71,9 +71,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8844C7052A41022C00A88E42 /* Blender */ = {
+		8844C7052A41022C00A88E42 /* blender */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8844C70D2A41022C00A88E42 /* Build configuration list for PBXNativeTarget "Blender" */;
+			buildConfigurationList = 8844C70D2A41022C00A88E42 /* Build configuration list for PBXNativeTarget "blender" */;
 			buildPhases = (
 				8844C7022A41022C00A88E42 /* Sources */,
 				8844C7032A41022C00A88E42 /* Frameworks */,
@@ -83,13 +83,13 @@
 			);
 			dependencies = (
 			);
-			name = Blender;
+			name = blender;
 			packageProductDependencies = (
 				8844C7112A41025700A88E42 /* ArgumentParser */,
 				8844C7142A4103E700A88E42 /* q20kshare */,
 			);
 			productName = Blender;
-			productReference = 8844C7062A41022C00A88E42 /* Blender */;
+			productReference = 8844C7062A41022C00A88E42 /* blender */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -100,14 +100,14 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					8844C7052A41022C00A88E42 = {
 						CreatedOnToolsVersion = 14.3.1;
 					};
 				};
 			};
-			buildConfigurationList = 8844C7012A41022C00A88E42 /* Build configuration list for PBXProject "Blender" */;
+			buildConfigurationList = 8844C7012A41022C00A88E42 /* Build configuration list for PBXProject "blender" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -124,7 +124,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8844C7052A41022C00A88E42 /* Blender */,
+				8844C7052A41022C00A88E42 /* blender */,
 			);
 		};
 /* End PBXProject section */
@@ -174,9 +174,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -234,9 +236,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -258,6 +262,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = X2PQYA6S48;
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -269,6 +274,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = X2PQYA6S48;
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -279,7 +285,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8844C7012A41022C00A88E42 /* Build configuration list for PBXProject "Blender" */ = {
+		8844C7012A41022C00A88E42 /* Build configuration list for PBXProject "blender" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8844C70B2A41022C00A88E42 /* Debug */,
@@ -288,7 +294,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8844C70D2A41022C00A88E42 /* Build configuration list for PBXNativeTarget "Blender" */ = {
+		8844C70D2A41022C00A88E42 /* Build configuration list for PBXNativeTarget "blender" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8844C70E2A41022C00A88E42 /* Debug */,
