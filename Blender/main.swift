@@ -29,6 +29,12 @@ func blend(opinions:[Opinion], challenges:[Challenge]) -> [Challenge] {
 //
 
 struct Blender: ParsableCommand {
+  func wprint(_ x:Any) {
+    if warnings {
+      print(x)
+    }
+  }
+  
   func fixupJSON(   data: Data, url: String)throws -> [Challenge] {
   // see if missing ] at end and fix it\
   do {
@@ -45,7 +51,7 @@ struct Blender: ParsableCommand {
             return x
           }
           catch {
-            wprint("****Can't read Challenges from \(url), error: \(error)" )
+            print("****Can't read Challenges from \(url), error: \(error)" )
             throw BlenderError.badInputURL
           }
         }
@@ -58,15 +64,11 @@ struct Blender: ParsableCommand {
 
 
 
-  func wprint(x:Any) {
-    if warnings {
-      print(x)
-    }
-  }
+
 
   static let configuration = CommandConfiguration(
     abstract: "Step 4: Blender merges the data from Veracitator with the data from Prepper and prepares a single output file of gamedata - ReadyforIOS.",
-    version: "0.3.1",
+    version: "0.3.3",
     subcommands: [],
     defaultSubcommand: nil,
     helpNames: [.long, .short]
@@ -81,7 +83,7 @@ struct Blender: ParsableCommand {
   @Option(name:.shortAndLong, help: "New File of Gamedata (ReadyForIOSx.json)")
   var outputPath: String?
   
-  @Option(name:.warnings, help: "Show warnings about quiet file recoveries")
+  @Option(name:.shortAndLong, help: "Show warnings about quiet file recoveries")
   var warnings: Bool = false
   
   fileprivate func fetchChallenges(_ challenges: inout [Challenge]) throws {

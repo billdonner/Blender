@@ -17,7 +17,7 @@
                BlueprintIdentifier = "8844C7052A41022C00A88E42"
                BuildableName = "blender"
                BlueprintName = "blender"
-               ReferencedContainer = "container:Blender.xcodeproj">
+               ReferencedContainer = "container:blender.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,7 +47,7 @@
             BlueprintIdentifier = "8844C7052A41022C00A88E42"
             BuildableName = "blender"
             BlueprintName = "blender"
-            ReferencedContainer = "container:Blender.xcodeproj">
+            ReferencedContainer = "container:blender.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -82,7 +82,7 @@
             BlueprintIdentifier = "8844C7052A41022C00A88E42"
             BuildableName = "blender"
             BlueprintName = "blender"
-            ReferencedContainer = "container:Blender.xcodeproj">
+            ReferencedContainer = "container:blender.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
