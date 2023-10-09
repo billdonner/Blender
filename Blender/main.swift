@@ -12,7 +12,6 @@ enum BlenderError :Error {
   case noChallenges
 }
 
-
 //write a function to merge arrays X and Y according to "id"
 func blend(opinions:[Opinion], challenges:[Challenge]) -> [Challenge] {
     var mergedArray: [Challenge] = []
@@ -151,7 +150,7 @@ struct Blender: ParsableCommand {
     print(">Blender: \(topicData.topics.count) Topics")
     
     var topicDict : [String:Topic] = [:]
-    for topic in topicData {
+    for topic in topicData.topics {
       topicDict[topic.name] =  topic
     }
     
@@ -202,8 +201,7 @@ struct Blender: ParsableCommand {
                                  commentary:topicDict[last].notes
                                 )) //include remainders
     }
-    
- 
+
     let  z = PlayData(topicData:topicData,
                       gameDatum:gameDatum,
                       playDataId:UUID().uuidString,
