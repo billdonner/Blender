@@ -146,9 +146,10 @@ struct Blender: ParsableCommand {
     print(">Blender running at \(Date())")
     
     let topicData = try fetchTopicData()
+    
+    print(">Blender: \(topicData.snarky)")
     print(">Blender: authored by \(topicData.author) on \(topicData.date)")
     print(">Blender: \(topicData.topics.count) Topics")
-    
     var topicDict : [String:Topic] = [:]
     for topic in topicData.topics {
       topicDict[topic.name] =  topic
@@ -181,8 +182,8 @@ struct Blender: ParsableCommand {
         if challenge.topic != last {
           gameDatum.append( GameData(subject:last,
                                      challenges: theseChallenges,
-                                     pic: topicDict[last].pic,
-                                     commentary:topicDict[last].notes
+                                     pic: topicDict[last]?.pic ?? "",
+                                     commentary:topicDict[last]?.notes ?? ""
                                     ))
           theseChallenges = []
          topicCount += 1
@@ -197,8 +198,8 @@ struct Blender: ParsableCommand {
       topicCount += 1
       gameDatum.append( GameData(subject:last,
                                  challenges: theseChallenges,
-                                 pic: topicDict[last].pic,
-                                 commentary:topicDict[last].notes
+                                 pic: topicDict[last]?.pic ?? "",
+                                 commentary:topicDict[last]?.notes ?? ""
                                 )) //include remainders
     }
 
