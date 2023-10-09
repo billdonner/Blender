@@ -61,14 +61,9 @@ struct Blender: ParsableCommand {
   throw BlenderError.noChallenges
 }
 
-
-
-
-
-
   static let configuration = CommandConfiguration(
-    abstract: "Step 4: Blender merges the data from Veracitator with the data from Prepper and prepares a single output file of gamedata - ReadyforIOS.",
-    version: "0.3.3",
+    abstract: "Step 4: Blender merges the data from Veracitator with the data from Prepper, blending in the TopicsData json  and prepares a single output file of gamedata - ReadyforIOS.",
+    version: "0.3.4",
     subcommands: [],
     defaultSubcommand: nil,
     helpNames: [.long, .short]
@@ -80,11 +75,22 @@ struct Blender: ParsableCommand {
   @Argument(help: "input file of Opinions (Between_3_4.json)")
   var yPath:String
   
+  @Argument(help: "input file of Topic Data(TopicData.json)")
+  var tdPath:String
+  
   @Option(name:.shortAndLong, help: "New File of Gamedata (ReadyForIOSx.json)")
   var outputPath: String?
   
   @Option(name:.shortAndLong, help: "Show warnings about quiet file recoveries")
   var warnings: Bool = false
+
+  func fetchTopicData() throws -> TopicData {
+    // Load substitutions JSON file,throw out all of the metadata for now
+    let xdata = try Data(contentsOf: URL(fileURLWithPath: tdPath))
+    let decoded = try JSONDecoder().decode(TopicData.self, from:xdata)
+    return decoded
+  }
+  
   
   fileprivate func fetchChallenges(_ challenges: inout [Challenge]) throws {
     let xData = try Data(contentsOf: URL(fileURLWithPath: xPath))
@@ -140,9 +146,15 @@ struct Blender: ParsableCommand {
     print(">Blender Command Line: \(CommandLine.arguments)")
     print(">Blender running at \(Date())")
     
+    let topicData = try fetchTopicData()
+    print(">Blender: authored by \(topicData.author) on \(topicData.date)")
+    print(">Blender: \(topicData.topics.count) Topics")
     
-    //testBlend()
-   
+    var topicDict : [String:Topic] = [:]
+    for topic in topicData {
+      topicDict[topic.name] =  topic
+    }
+    
     var challenges:[Challenge] = []
     try fetchChallenges(&challenges)
     print(">Blender: \(challenges.count) Challenges")
@@ -155,8 +167,6 @@ struct Blender: ParsableCommand {
     
     print(">Blender: \(newChallenges.count) Merged")
 
-    
-    
     //sort by topic
     newChallenges.sort(){ a,b in
       return a.topic < b.topic
@@ -170,7 +180,11 @@ struct Blender: ParsableCommand {
       // print(challenge.topic,lastTopic)
       if let last = lastTopic  {
         if challenge.topic != last {
-          gameDatum.append( GameData(subject:last,challenges: theseChallenges))
+          gameDatum.append( GameData(subject:last,
+                                     challenges: theseChallenges,
+                                     pic: topicDict[last].pic,
+                                     commentary:topicDict[last].notes
+                                    ))
           theseChallenges = []
          topicCount += 1
         }
@@ -182,11 +196,18 @@ struct Blender: ParsableCommand {
     }
     if let last = lastTopic {
       topicCount += 1
-      gameDatum.append( GameData(subject:last,challenges: theseChallenges)) //include remainders
+      gameDatum.append( GameData(subject:last,
+                                 challenges: theseChallenges,
+                                 pic: topicDict[last].pic,
+                                 commentary:topicDict[last].notes
+                                )) //include remainders
     }
     
  
-    let  z = PlayData(gameDatum:gameDatum,playDataId:UUID().uuidString,blendDate: Date(),pic:nil)
+    let  z = PlayData(topicData:topicData,
+                      gameDatum:gameDatum,
+                      playDataId:UUID().uuidString,
+                      blendDate: Date(),pic:nil)
     //gamedata is good for writing
     if let outputPath = outputPath {
       let encoder = JSONEncoder()

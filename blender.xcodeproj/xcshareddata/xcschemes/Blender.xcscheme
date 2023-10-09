@@ -60,6 +60,10 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "/users/billdonner/Desktop/prompt-related/topics-5x10.json"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "-o /users/billdonner/Desktop/fs/readyforios1.json"
             isEnabled = "YES">
          </CommandLineArgument>

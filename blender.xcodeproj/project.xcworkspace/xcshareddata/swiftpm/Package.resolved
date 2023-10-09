@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/billdonner/q20kshare",
       "state" : {
-        "revision" : "b7f9a736df8a78f30fc52f4b97d5f10ca2617dff",
-        "version" : "0.2.21"
+        "revision" : "a3e66b8120c978e5c6f47e2272a27349f253d2f2",
+        "version" : "0.4.2"
       }
     },
     {
