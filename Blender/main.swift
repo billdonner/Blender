@@ -62,7 +62,7 @@ struct Blender: ParsableCommand {
 
   static let configuration = CommandConfiguration(
     abstract: "Step 4: Blender merges the data from Veracitator with the data from Prepper, blending in the TopicsData json  and prepares a single output file of gamedata - ReadyforIOS.",
-    version: "0.3.5",
+    version: "0.3.6",
     subcommands: [],
     defaultSubcommand: nil,
     helpNames: [.long, .short]
@@ -139,6 +139,7 @@ struct Blender: ParsableCommand {
     }
   }
   
+
   func run() throws {
     
     let start_time = Date()
@@ -150,9 +151,10 @@ struct Blender: ParsableCommand {
     print(">Blender: \(topicData.snarky)")
     print(">Blender: authored by \(topicData.author) on \(topicData.date)")
     print(">Blender: \(topicData.topics.count) Topics")
-    var topicDict : [String:Topic] = [:]
+    var topicsDict : [String:Topic] = [:]
     for topic in topicData.topics {
-      topicDict[topic.name] =  topic
+      topicsDict[topic.name] =  topic
+     // print("incoming:",topic.name,topic.pic)
     }
     
     var challenges:[Challenge] = []
@@ -166,43 +168,56 @@ struct Blender: ParsableCommand {
     var newChallenges = blend(opinions: opinions, challenges: challenges)
     
     print(">Blender: \(newChallenges.count) Merged")
+    
+    
+    //0 prepare outputs
+    for (key,topic) in topicsDict {
+      print(key,topic.name,topic.pic)
+    }
 
-    //sort by topic
+    //1 sort by topic
     newChallenges.sort(){ a,b in
       return a.topic < b.topic
     }
-    //separate challenges by topic and make an array of GameDatas
+    //2 separate challenges by topic and make an array of GameDatas
     var topicCount = 0
     var gameDatum : [ GameData] = []
-    var lastTopic: String? = nil
+    var lastTopic: String = ""
     var theseChallenges : [Challenge] = []
-    for challenge in newChallenges {
-      // print(challenge.topic,lastTopic)
-      if let last = lastTopic  {
-        if challenge.topic != last {
-          gameDatum.append( GameData(subject:last,
+    
+    func flushChallenges (_ topic:String) {
+      if theseChallenges.count != 0 {
+        let topicdata = topicsDict[topic]
+        if let topicdata = topicdata {
+          let pic = topicdata.pic
+          let commentary = topicdata.notes
+          gameDatum.append( GameData(topic:topic,
                                      challenges: theseChallenges,
-                                     pic: topicDict[last]?.pic ?? "",
-                                     commentary:topicDict[last]?.notes ?? ""
+                                     pic: pic,
+                                     commentary:commentary
                                     ))
+          topicCount += 1
           theseChallenges = []
-         topicCount += 1
+        } else {
+          print ("***flush could not find \(topic)")
         }
       }
-      // append this challenge and set topic
-      theseChallenges += [challenge]
-      lastTopic = challenge.topic
-      
     }
-    if let last = lastTopic {
-      topicCount += 1
-      gameDatum.append( GameData(subject:last,
-                                 challenges: theseChallenges,
-                                 pic: topicDict[last]?.pic ?? "",
-                                 commentary:topicDict[last]?.notes ?? ""
-                                )) //include remainders
+    
+    for challenge in newChallenges {
+      if challenge.topic == lastTopic {
+        theseChallenges += [challenge]
+      } else { // first time with new topic
+         flushChallenges(lastTopic)
+        }
+    lastTopic = challenge.topic
     }
-
+    
+   flushChallenges(lastTopic)  // anything left over
+    
+   
+    
+   // bundle everything up and finish
     let  z = PlayData(topicData:topicData,
                       gameDatum:gameDatum,
                       playDataId:UUID().uuidString,
@@ -215,8 +230,6 @@ struct Blender: ParsableCommand {
       try data.write(to:URL(fileURLWithPath: outputPath))
       print(">Blender wrote \(data.count) PlayData bytes to \(outputPath)")
     }
-    
-    
     let elapsed = Date().timeIntervalSince(start_time)
     print(">Blender finished in \(elapsed)secs")
   }
