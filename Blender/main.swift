@@ -11,9 +11,48 @@ enum BlenderError :Error {
   case badInputURL
   case noChallenges
 }
+func blend(opinions: [Opinion], challenges: [Challenge]) -> [Challenge] {
+    // Sort the arrays based on their id property
+    let opinionsort = opinions.sorted { $0.id < $1.id }
+    let challengesort = challenges.sorted { $0.id < $1.id }
+  
+    // Create an empty array to hold the merged results
+    var mergedArray = [Challenge]()
+    
+    // Merge the sorted arrays by matching their ids
+    var opindex = 0
+    var chindex = 0
+    
+    while opindex < opinionsort.count && chindex < challengesort.count {
+        let op = opinionsort[opindex]
+        let ch = challengesort[chindex]
+        
+        if op.id == ch.id {
+            // Create and add a new C object with the matching ids
+          
+          let z = Challenge(question: ch.question, topic: ch.topic, hint: ch.hint, answers: ch.answers, correct: ch.correct ,id: ch.id,source:ch.aisource, prompt:ch.prompt, opinions:[op])
+          
+            mergedArray.append(z)
+            
+            // Move to the next items in both arrays
+            opindex += 1
+            chindex += 1
+        } else if op.id < ch.id {
+            // item1 has a smaller id, so move to the next item in arg1
+            opindex += 1
+        } else {
+            // item2 has a smaller id, so move to the next item in arg2
+            chindex += 1
+        }
+    }
+    
+    return mergedArray
+}
+
+
 
 //write a function to merge arrays X and Y according to "id"
-func blend(opinions:[Opinion], challenges:[Challenge]) -> [Challenge] {
+func xblend(opinions:[Opinion], challenges:[Challenge]) -> [Challenge] {
     var mergedArray: [Challenge] = []
     for o in opinions {
         for c in challenges {
@@ -62,7 +101,7 @@ struct Blender: ParsableCommand {
 
   static let configuration = CommandConfiguration(
     abstract: "Step 4: Blender merges the data from Veracitator with the data from Prepper, blending in the TopicsData json  and prepares a single output file of gamedata - ReadyforIOS.",
-    version: "0.3.6",
+    version: "0.3.7",
     subcommands: [],
     defaultSubcommand: nil,
     helpNames: [.long, .short]
@@ -170,10 +209,7 @@ struct Blender: ParsableCommand {
     print(">Blender: \(newChallenges.count) Merged")
     
     
-    //0 prepare outputs
-    for (key,topic) in topicsDict {
-      print(key,topic.name,topic.pic)
-    }
+ 
 
     //1 sort by topic
     newChallenges.sort(){ a,b in
@@ -184,6 +220,7 @@ struct Blender: ParsableCommand {
     var gameDatum : [ GameData] = []
     var lastTopic: String = ""
     var theseChallenges : [Challenge] = []
+    var totalChallenges = 0
     
     func flushChallenges (_ topic:String) {
       if theseChallenges.count != 0 {
@@ -196,6 +233,9 @@ struct Blender: ParsableCommand {
                                      pic: pic,
                                      commentary:commentary
                                     ))
+          
+          print(topicdata.name,topicdata.pic,theseChallenges.count)
+          totalChallenges += theseChallenges.count
           topicCount += 1
           theseChallenges = []
         } else {
@@ -209,13 +249,14 @@ struct Blender: ParsableCommand {
         theseChallenges += [challenge]
       } else { // first time with new topic
          flushChallenges(lastTopic)
+        theseChallenges = [challenge] //!!
         }
     lastTopic = challenge.topic
     }
     
    flushChallenges(lastTopic)  // anything left over
     
-   
+   print(">Blender: \(totalChallenges) prepared challenges")
     
    // bundle everything up and finish
     let  z = PlayData(topicData:topicData,

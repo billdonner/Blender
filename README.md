@@ -1,7 +1,7 @@
 #  Blender
 
 Freeport.Software for internal use only 
-    0.3.6
+    0.3.7
 
 ```
 OVERVIEW: Step 4: Blender merges the data from Veracitator with the data from
