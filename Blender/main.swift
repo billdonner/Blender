@@ -101,7 +101,7 @@ struct Blender: ParsableCommand {
 
   static let configuration = CommandConfiguration(
     abstract: "Step 4: Blender merges the data from Veracitator with the data from Prepper, blending in the TopicsData json  and prepares a single output file of gamedata - ReadyforIOS.",
-    version: "0.3.7",
+    version: "0.3.8",
     subcommands: [],
     defaultSubcommand: nil,
     helpNames: [.long, .short]

@@ -52,19 +52,19 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "/users/billdonner/Desktop/fs/Between_1_2.json"
+            argument = "/users/fs/Between_1_2.json"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "/users/billdonner/Desktop/fs/Between_3_4.json"
+            argument = "/users/fs/Between_3_4.json"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "/users/billdonner/Desktop/prompt-related/topics-5x10.json"
+            argument = "/users/fs/topics-1x1x1.json"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-o /users/billdonner/Desktop/fs/readyforios1.json"
+            argument = "-o /users/fs/readyforios1.json"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
